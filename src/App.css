@@ -22,3 +22,15 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.buton-style {
+  border-bottom: solid 2px #fb6605;
+  transition: border 0.2s;
+  font-family: bariol;
+  color: #515553;
+}
+
+.buton-style:focus {
+  border-bottom: solid 4px #fb3103;
+  outline: none;
+}
