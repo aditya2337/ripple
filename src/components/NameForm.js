@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ArrowForward from 'material-ui/svg-icons/navigation/arrow-forward';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import questions from '../questions';
+import Question from './Question';
 
 export default class NameForm extends Component {
 
@@ -10,66 +12,9 @@ export default class NameForm extends Component {
 
     this.state = {
       showButton: false,
-      question1: {
-        q: `Adam is smaller than John,
-        Jamie is taller than Alex,
-        John is taller than Jamie,
-        Jamie is smaller than Adam.
-        Who is the tallest?`,
-        choices: [
-          'John',
-          'Adam',
-          'Alex',
-          'Jamie'
-        ]
-      },
-      question2: {
-        q: `How many ducks does it take
-        to have two ducks behind one duck,
-        one duck in front of two ducks,
-        and two ducks in front of one duck?`,
-        choices: [
-          '9 Ducks',
-          '2 Ducks',
-          '1 Duck',
-          '3 Ducks'
-        ]
-      },
-      question3: {
-        q: `A rooster lays an egg on a roof.
-        The wind is blowing East.
-        Which way will the egg fall?`,
-        choices: [
-          'There is no egg',
-          'West',
-          'South',
-          'North',
-          'East'
-        ]
-      },
-      question4: {
-        q: `Two fathers took there sons fishing.
-        They all caught exactly one fish.
-        When they came back, they had three fish.
-        None of the fish were stolen,
-        eaten or thrown overboard.
-        How come they only had three?`,
-        choices: [
-          'Because it was rotten',
-          'Because they gave one fish away',
-          'Because someone ate it',
-          'Because the grandfather took his son fishing and he took his son fishing'
-        ]
-      },
-      question5: {
-        q: `Which does not belong?`,
-        choices: [
-          'Apple',
-          'Corn',
-          'Tomato',
-          'Banana'
-        ]
-      }
+      questions,
+      answeredCount: 1,
+      showQuestions: false
     };
   }
 
@@ -84,10 +29,12 @@ export default class NameForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const { answeredCount } = this.state;
+    this.setState({ showQuestions: true, answeredCount: answeredCount + 1 });
   }
 
   render () {
-    const { showButton } = this.state;
+    const { showButton, showQuestions, answeredCount } = this.state;
     const Button = (showButton) ? (
       <FloatingActionButton type='submit'>
         <ArrowForward />
@@ -95,7 +42,13 @@ export default class NameForm extends Component {
     ) : (
       ''
     );
-    return (
+
+    const form = (showQuestions) ? (
+      <form onSubmit={this.handleSubmit}>
+        <Question question={questions[`question_${answeredCount}`].q}
+          choices={questions[`question_${answeredCount}`].choices} />
+      </form>
+    ) : (
       <form className='flex flex-column' onSubmit={this.handleSubmit}>
         <input
           type='text'
@@ -114,5 +67,6 @@ export default class NameForm extends Component {
         </div>
       </form>
     );
+    return form;
   }
 }
